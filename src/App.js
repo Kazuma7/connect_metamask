@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { useEffect, useState } from "react";
 
-function App() {
+const App = () => {
+  const [account, setAccount] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [metaMaskFlag, setMetaMaskFlag] = useState(false);
+
+  useEffect(() => {
+    const tmpFlag = window.ethereum && window.ethereum.isMetaMask;
+    setMetaMaskFlag(tmpFlag);
+  }, []);
+
+  const connectWallet = () => {
+    window.ethereum
+      .request({ method: "eth_requestAccounts" })
+      .then((result) => {
+        setAccount(result[0]);
+      })
+      .catch((error) => {
+        setErrorMessage(error.message);
+      });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>{account}</div>
+      <div>
+        {account ? (
+          <button onClick={connectWallet}>Connected</button>
+        ) : (
+          <button onClick={connectWallet}>Connected Wallet</button>
+        )}
+      </div>
     </div>
   );
-}
+};
 
 export default App;
