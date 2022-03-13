@@ -28,7 +28,7 @@ const App = () => {
       <div>{account}</div>
       <div>
         {account ? (
-          <button onClick={connectWallet}>Connected</button>
+          <button>Connected</button>
         ) : (
           <button onClick={connectWallet}>Connected Wallet</button>
         )}
